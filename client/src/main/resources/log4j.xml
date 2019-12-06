@@ -1,0 +1,45 @@
+<Configuration status="DEBUG" monitorInterval="60">
+    <Properties>
+        <Property name="log-path">/hms/logs/cimdj</Property>
+        <Property name="log-pattern">%d{dd MMM yyyy HH:mm:ss.SSS} %5p %c{1} - %m%n</Property>
+        <Property name="log-rotate-pattern">.log.%d{yyyy-MM-dd-HH}</Property>
+    </Properties>
+    <Appenders>
+        <Console name="console-appender" target="SYSTEM_OUT">
+            <PatternLayout pattern="${log-pattern}"/>
+        </Console>
+        <RollingFile name="error-log" fileName="${log-path}/cimd-connector-error.log"
+                     filePattern="${log-path}/cimd-connector-error${log-rotate-pattern}">
+            <PatternLayout pattern="${log-pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="7"/>
+        </RollingFile>
+        <RollingRandomAccessFile name="debug-appender" fileName="${log-path}/cimd-connector-debug.log"
+                                 filePattern="${log-path}/cimd-connector-debug${log-rotate-pattern}">
+            <PatternLayout pattern="${log-pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="7"/>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="info-log" fileName="${log-path}/cimd-connector-info.log"
+                                 filePattern="${log-path}/cimd-connector-info${log-rotate-pattern}">
+            <PatternLayout pattern="${log-pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="7"/>
+        </RollingRandomAccessFile>
+        <SnmpLoggerAppender name="snmpTrap" snmpTrapFileName="/hms/support/snmp_send.sh"/>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <appender-ref ref="debug-appender" level="debug"/>
+            <appender-ref ref="info-log" level="info"/>
+            <appender-ref ref="error-log" level="error"/>
+            <appender-ref ref="console-appender" level="error"/>
+        </Root>
+    </Loggers>
+</Configuration>
