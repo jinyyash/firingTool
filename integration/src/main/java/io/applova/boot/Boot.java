@@ -47,6 +47,6 @@ public class Boot implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        sendRequest.send();
+        sendRequest.send("https://sendre.free.beeceptor.com");
     }
 }

@@ -1,9 +1,10 @@
 package io.applova.requestHandler;
 
-import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.HttpResponse;
 
 import java.io.IOException;
+import java.util.concurrent.Future;
 
 public interface RequestHandler {
-    CloseableHttpResponse sendPostRequest(String url, String jsonString) throws IOException;
+   Future<HttpResponse> sendPostRequest(String url, String jsonString) throws IOException;
 }

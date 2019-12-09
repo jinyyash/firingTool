@@ -1,14 +1,20 @@
 package io.applova.client;
 
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
+import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HttpClient {
-    public CloseableHttpClient getClientConnection() {
-        return HttpClientBuilder.create().disableContentCompression().build();
+    public CloseableHttpAsyncClient getClientConnection() {
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setSocketTimeout(1000)
+                .setConnectTimeout(1000).build();
+        return HttpAsyncClients.custom()
+                .setDefaultRequestConfig(requestConfig)
+                .build();
+
 
     }
 }
