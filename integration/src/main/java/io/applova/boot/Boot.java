@@ -2,6 +2,7 @@ package io.applova.boot;
 
 import io.applova.sender.SendRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,11 +15,14 @@ import java.util.concurrent.Executors;
 
 @SpringBootApplication
 @ComponentScan("io.applova")
-/*public class Boot implements WrapperListener
-{
-    public static void main( String[] args )
-    {
-        WrapperManager.start(new Boot() , args);
+public class Boot implements WrapperListener, CommandLineRunner {
+    @Autowired
+    SendRequest sendRequest;
+    @Value("${client.url}")
+    String url;
+
+    public static void main(String[] args) {
+        WrapperManager.start(new Boot(), args);
     }
 
     @Override
@@ -36,17 +40,11 @@ import java.util.concurrent.Executors;
     public void controlEvent(int i) {
 
     }
-}*/
-public class Boot implements CommandLineRunner {
-    @Autowired
-    SendRequest sendRequest;
-    public static void main( String[] args )
-    {
-        SpringApplication.run(Boot.class, args);
-    }
 
     @Override
-    public void run(String... args) throws Exception {
-        sendRequest.send("https://sendre.free.beeceptor.com");
+    public void run(String... args) {
+
+        sendRequest.send(url);
+
     }
 }

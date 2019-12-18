@@ -20,7 +20,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 public class SendRequest100TPS implements SendRequest {
     private Logger logger = LogManager.getLogger(SendRequest100TPS.class);
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private ExecutorService executor = Executors.newFixedThreadPool(5);
+    private ExecutorService executor = Executors.newFixedThreadPool(1);
     private RequestHandler requestHandler;
     private int count = 0;
     private List<Future<HttpResponse>> httpResponseFuture = new ArrayList<>();
@@ -32,20 +32,18 @@ public class SendRequest100TPS implements SendRequest {
 
     @Override
     public void send(String url) {
-        final Runnable send100Requests = new Runnable() {
-            public void run() {
-                count++;
-                Future resFuture = executor.submit(() -> {
-                    try {
-                        requestHandler.sendPostRequest(url, "");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-                System.out.println("running " + count);
-                httpResponseFuture.add(resFuture);
+        final Runnable send100Requests = () -> {
+            count++;
+            Future resFuture = executor.submit(() -> {
+                try {
+                    requestHandler.sendPostRequest(url, "");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            System.out.println("running " + count);
+            httpResponseFuture.add(resFuture);
 
-            }
         };
         final ScheduledFuture<?> handleIn1Second =
                 scheduler.scheduleAtFixedRate(send100Requests, 1, 10, MILLISECONDS);

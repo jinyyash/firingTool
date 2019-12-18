@@ -4,18 +4,21 @@ import io.applova.sender.SendRequest;
 import io.applova.sender.impl.SendRequest100TPS;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockserver.client.MockServerClient;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.verify.VerificationTimes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.matchers.Times.exactly;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
-@SpringBootTest(classes = {SendRequest100TPS.class})
+@SpringBootTest(classes = {SendRequest100TPS.class, SendRequest.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ClientTest {
     private static ClientAndServer mockServer;
     @Autowired

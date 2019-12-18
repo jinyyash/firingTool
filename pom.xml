@@ -15,6 +15,7 @@
         <module>client</module>
         <module>integration</module>
         <module>common</module>
+        <module>core</module>
     </modules>
 
     <properties>
